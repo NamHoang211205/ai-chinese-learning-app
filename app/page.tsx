@@ -1,7 +1,6 @@
 import Cta from "@/components/Cta"
 import CompanionCard from "@/components/ui/CompanionCard"
 import CompanionList from "@/components/ui/CompanionList"
-import React from 'react'
 
 const Page = () => {
   return (
