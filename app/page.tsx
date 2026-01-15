@@ -11,10 +11,18 @@ const Page = () => {
         <CompanionCard
         id="123"
         name="Nam Hoang"
-        topic="AI"
+        topic="Listening"
         subject="Chinese"
         duration={30}
         color="#ffda6e" 
+        />
+        <CompanionCard
+        id="123"
+        name="Nam Hoang"
+        topic="Reading"
+        subject="Chinese"
+        duration={30}
+        color="#a0ffb0" 
         />
         <CompanionCard 
         id="456"
