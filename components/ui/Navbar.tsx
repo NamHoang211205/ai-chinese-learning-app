@@ -1,6 +1,6 @@
 import React from 'react'
 import NavItem from '././././NavItem'
-import { Link } from 'lucide-react'
+import Link from "next/link"
 import Image from 'next/image'
 
 const Navbar = () => {

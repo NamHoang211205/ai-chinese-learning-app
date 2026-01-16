@@ -1,4 +1,4 @@
-import { Link } from "lucide-react"
+import Link from "next/link"
 import { Table } from "./table"
 import { TableHeader } from "./table"
 import { TableRow } from "./table"
