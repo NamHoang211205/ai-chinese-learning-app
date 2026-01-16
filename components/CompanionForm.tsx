@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { subjects } from "@/constants"
 import { Textarea } from "./ui/textarea"
+// import { Sl } from "zod/v4/locales";
 
 const voices = [
   { value: 1, label: "Male" },
@@ -125,7 +126,7 @@ const CompanionForm = () => {
           name="voice"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Voices</FormLabel>
+              <FormLabel>Voice</FormLabel>
               <FormControl>
                 <Select
                   onValueChange={(val) => field.onChange(Number(val))}
@@ -156,11 +157,19 @@ const CompanionForm = () => {
             <FormItem>
               <FormLabel>Style</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="e.g., friendly, concise, exam-focused"
-                  {...field}
-                  className="input"
-                />
+                <Select 
+                onValueChange={field.onChange} 
+                value={field.value} 
+                defaultValue={field.value}
+                >
+                  <SelectTrigger className="input">
+                    <SelectValue placeholder="Select the style" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="formal">Formal</SelectItem>
+                    <SelectItem value="casual">Casual</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -172,7 +181,7 @@ const CompanionForm = () => {
           name="duration"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Session Duration (minutes)</FormLabel>
+              <FormLabel>Estimated session Duration in minutes</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -188,7 +197,7 @@ const CompanionForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit"className="w-full cursor-pointer">Build Your Companion</Button>
       </form>
     </Form>
   )
