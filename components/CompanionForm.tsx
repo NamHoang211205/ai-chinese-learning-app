@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,18 +15,20 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { subjects } from "@/constants"
 import { Textarea } from "./ui/textarea"
+import { createCompanion } from "@/lib/actions/companion.actions";
+import { redirect } from "next/navigation";
 // import { Sl } from "zod/v4/locales";
 
 const voices = [
-  { value: 1, label: "Male" },
-  { value: 2, label: "Female" },
+  { value: "1", label: "Male" },
+  { value: "2", label: "Female" },
 ];
 
 const formSchema = z.object({
   name: z.string().min(1, {message: "Companion is required."}),
   subject: z.string().min(1, {message: "Subject is required."}),
   topic: z.string().min(1, {message: "Topic is required."}),
-  voice: z.number().min(1, {message: "Voice is required."}),
+  voice: z.string().min(1, {message: "Voice is required."}),
   style: z.string().min(1, {message: "Style is required."}),
   duration: z.coerce.number().min(1, {message: "Duration is required."})
 
@@ -45,18 +46,24 @@ const CompanionForm = () => {
       name: "",
       subject: "",
       topic: "",
-      voice: 1,
+      voice: "1",
       style: "",
       duration: 15,
     },
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const companion = await createCompanion(values);
+
+    if (companion) {
+      redirect(`/companions/${companion.id}`);
+    } else {
+      console.log('Failed to create companion');
+      redirect('/');
+    }
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -129,16 +136,16 @@ const CompanionForm = () => {
               <FormLabel>Voice</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={(val) => field.onChange(Number(val))}
-                  value={String(field.value)}
-                  defaultValue={String(field.value)}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
                 >
                   <SelectTrigger className="input">
                     <SelectValue placeholder="Select voice" />
                   </SelectTrigger>
                   <SelectContent>
                     {voices.map((v) => (
-                      <SelectItem key={v.value} value={String(v.value)}>
+                      <SelectItem key={v.value} value={v.value}>
                         {v.label}
                       </SelectItem>
                     ))}
@@ -203,4 +210,4 @@ const CompanionForm = () => {
   )
 }
 
-export default CompanionForm
+export default CompanionForm;
