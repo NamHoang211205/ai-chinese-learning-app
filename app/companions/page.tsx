@@ -10,7 +10,6 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
   const topic = filters.topic? filters.topic  : '';
 
   const Learning = await getAllCompanions({ subject, topic });
-  console.log('Learning', Learning);
 
   return (
     <main>
