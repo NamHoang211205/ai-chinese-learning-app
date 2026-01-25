@@ -1,11 +1,12 @@
 'use client';
 
-import { cn, getSubjectColor } from '@/lib/utils'
+import { cn, configureAssistant, getSubjectColor } from '@/lib/utils'
 import { useState, useEffect, useRef } from 'react';
 import { vapi } from '@/lib/vapi.sdk';
 import Image from 'next/image';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import soundwaves from '@/constants/soundwaves.json';
+import { set } from 'zod';
 
 enum CallStatus {
     INACTIVE = 'INACTIVE',
@@ -60,9 +61,22 @@ const CompanionComponent = ({companionId, subject, topic, name, userName, userIm
         setIsMuted(!isMuted);
     }
 
-    const HandleCall = async () => {}
+    const HandleCall = async () => {
+        setCallStatus(CallStatus.CONNECTING);
 
-    const handleDisconnect = async () => {}
+        const assistantOverrides = {
+            variableValues: { subject, topic, style },
+            clientMessages: ['transcript'],
+            serverMessages: [],
+        }
+        // @ts-expect-error
+        vapi.start(configureAssistant(voice, style),assistantOverrides);
+    }
+
+    const handleDisconnect = async () => {
+        setCallStatus(CallStatus.FINISHED);
+        vapi.stop();
+    }
 
   return (
     <section className='flex flex-col h-[70vh]'>
@@ -116,6 +130,10 @@ const CompanionComponent = ({companionId, subject, topic, name, userName, userIm
                     : 'Start Session'}
                 </button>
             </div>
+        </section>
+        <section className='transcript'>
+            <div className='transcript-message no-scrollbar'>MESSAGES</div>
+            <div className='transcript-fade'></div>
         </section>
         </section>
   )
