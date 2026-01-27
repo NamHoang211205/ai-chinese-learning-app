@@ -20,8 +20,8 @@ import { redirect } from "next/navigation";
 // import { Sl } from "zod/v4/locales";
 
 const voices = [
-  { value: "1", label: "Male" },
-  { value: "2", label: "Female" },
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
 ];
 
 const formSchema = z.object({
@@ -46,7 +46,7 @@ const CompanionForm = () => {
       name: "",
       subject: "",
       topic: "",
-      voice: "1",
+      voice: "male",
       style: "",
       duration: 15,
     },
