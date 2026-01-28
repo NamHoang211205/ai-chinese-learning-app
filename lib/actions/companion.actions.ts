@@ -92,3 +92,16 @@ export const getUserSessions = async (userId: string, limit: number = 10) => {
 
     return data.map(({Learning}) => Learning);
 }
+
+export const getUser = async (userId: string) => {
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+        .from('Learning')
+        .select()
+        .eq('author', userId)
+        
+    
+    if (error) throw new Error(error?.message);
+
+    return data;
+}
