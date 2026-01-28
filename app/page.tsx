@@ -12,6 +12,7 @@ const Page = async () => {
   return (
     <main>
        <h1 className='text-2xl underline'> popular companions </h1>
+
        <section className="home-section" >
         {companions.map((companion) => (
           <CompanionCard
