@@ -57,7 +57,7 @@ export const getCompanion = async (id: string) => {
 export const addToSessionHistory = async (companionId: string) => {
     const {userId} = await auth();
     const supabase = createSupabaseClient();
-    const { data, error } = await supabase.from('SessionHistory').insert({
+    const { data, error } = await supabase.from('session_history').insert({
         companion_id: companionId,
         user_id: userId || 'guest',
     })
@@ -69,7 +69,7 @@ export const addToSessionHistory = async (companionId: string) => {
 export const getRecentSessionHistory = async (limit: number = 10) => {
     const supabase = createSupabaseClient();
     const { data, error } = await supabase
-        .from('SessionHistory')
+        .from('session_history')
         .select(`Learning: companion_id (*)`)
         .order('created_at', { ascending: false })
         .limit(limit)
@@ -82,7 +82,7 @@ export const getRecentSessionHistory = async (limit: number = 10) => {
 export const getUserSessions = async (userId: string, limit: number = 10) => {
     const supabase = createSupabaseClient();
     const { data, error } = await supabase
-        .from('SessionHistory')
+        .from('session_history')
         .select(`Learning: companion_id (*)`)
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
