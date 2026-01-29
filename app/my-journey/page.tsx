@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion"
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
-import { getUser, getUserSessions } from "@/lib/actions/companion.actions";
+import { getUser, getUserSessions, getBookmarkedCompanions } from "@/lib/actions/companion.actions";
 import Image from "next/image";
 import CompanionList from "@/components/ui/CompanionList";
 
@@ -18,6 +18,7 @@ const Profile = async () => {
 
   const companions = await getUser(user.id);
   const sessionHistory = await getUserSessions(user.id);
+  const bookmarkedCompanions =  await getBookmarkedCompanions(user.id);
   return (
     <main className="min-lg:w-3/4">
       <section className="flex justify-between gap-4 max-sm:flex-col items-center">
@@ -53,12 +54,32 @@ const Profile = async () => {
           </div>
         </div>
       </section>
-      <Accordion type="multiple">
+       <Accordion type="multiple">
+        <AccordionItem value="bookmarks">
+          <AccordionTrigger className="text-2xl font-bold">Bookmarked Sessions {`(${bookmarkedCompanions.length})`}
+          </AccordionTrigger>
+          <AccordionContent>
+            <CompanionList title='Bookmarked Sessions' companions={bookmarkedCompanions} />
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value='companions'>
+          <AccordionTrigger className="text-2xl font-bold">My Companions {`(${companions.length})`}
+          </AccordionTrigger>
+          <AccordionContent>
+            <CompanionList 
+              title='My Companions' 
+              companions={companions} />
+          </AccordionContent>
+        </AccordionItem>
+
         <AccordionItem value="recent">
           <AccordionTrigger className="text-2xl font-bold">Recent Sessions {`(${sessionHistory.length})`}
           </AccordionTrigger>
           <AccordionContent>
-            <CompanionList title='Recent Sessions' companions={sessionHistory} />
+            <CompanionList 
+              title='Recent Sessions' 
+              companions={sessionHistory} />
           </AccordionContent>
         </AccordionItem>
 
